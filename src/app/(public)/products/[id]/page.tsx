@@ -6,7 +6,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useAppSelector } from "@/redux/hooks";
 
 import CheckoutForm from "../../../../components/stripe/CheckoutForm";
-import { payWithStripeIntent } from "@/lib/services/ordersApi";
+import { payWithSession, payWithStripeIntent } from "@/lib/services/ordersApi";
 
 export default function ViewProduct() {
   const stripePromise = loadStripe(
@@ -23,6 +23,14 @@ export default function ViewProduct() {
     });
     setPaymentIntent(response);
     setClientSecret(response.payment_intent.client_secret);
+  };
+
+  const paySession = async () => {
+    const response = await payWithSession({
+      price: "sub_1Qgcn1LZ9RxdQocLwCeJ9yCB",
+      quantity: 1,
+    });
+    console.log(response);
   };
   return (
     <div className="flex place-self-center overflow-y-auto overflow-x-hidden justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -132,6 +140,13 @@ export default function ViewProduct() {
                     className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                   >
                     {`Pay $${product?.price * quantity}`}
+                  </button>
+                  <button
+                    onClick={() => paySession()}
+                    type="button"
+                    className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                  >
+                    {`Pay session $${product?.price * quantity}`}
                   </button>
                 </div>
               )}

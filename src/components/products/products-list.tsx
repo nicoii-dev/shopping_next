@@ -16,7 +16,7 @@ export function ProductsList() {
   return (
     <div className="flex justify-center min-h-screen">
       <div className="flex flex-wrap p-10">
-        {products && products?.map((item: ItemInterface, index: number) => {
+        {products.length > 0 && products?.map((item: ItemInterface, index: number) => {
           return (
             <div key={index}>
               <ProductsItem item={item} />

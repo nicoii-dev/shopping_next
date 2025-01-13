@@ -12,7 +12,7 @@ const SigninPage = () => {
 
   const getProfileCallBack = useCallback(() => {
     setCookie("accessToken", session.data?.token.accessToken);
-    if (session.status === "authenticated") router.push("/home");
+    if (session.status === "authenticated") router.push("/products");
   }, [router, session.data?.token.accessToken, session.status]);
 
   useEffect(() => {
