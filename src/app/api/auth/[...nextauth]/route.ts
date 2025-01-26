@@ -1,16 +1,12 @@
 import NextAuth, {
-  User,
-  type NextAuthOptions,
   DefaultSession,
   ISODateString,
-  getServerSession,
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import Github from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
 import axiosInstance from "@/lib/services/axios";
-import axios from "axios";
-import { setCookie } from "cookies-next";
+import { Signin } from "@/lib/services/auth";
 
 declare module "next-auth" {
   // * modify Session interface to remove `user` in the session data
@@ -51,16 +47,19 @@ export const authOptions = {
       async authorize(credentials, req) {
         // Call your Laravel API to verify user credentials
         try {
-          const response = await axiosInstance.post("/auth/login", {
-            email: credentials?.email,
-            password: credentials?.password,
+          const response = await Signin({
+            email: credentials?.email ?? "",
+            password: credentials?.password ?? "",
           });
-
+          // const response = await axiosInstance.post("/auth/login", {
+          //   email: credentials?.email,
+          //   password: credentials?.password,
+          // });
           if (response.data) {
             // Return user object on success
             return response.data;
           }
-          console.log(response.data);
+
           // Handle specific API errors
           throw new Error(response.data.message || "Invalid credentials");
         } catch (error) {
@@ -74,12 +73,21 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
       id: "google",
       name: "Google",
+      // to always display account selection when signup
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code"
+        }
+      }
     }),
     Github({
       clientId: process.env.GITHUB_ID || "",
       clientSecret: process.env.GITHUB_SECRET || "",
       id: "github",
       name: "Github",
+      
     }),
   ],
   callbacks: {
@@ -87,14 +95,12 @@ export const authOptions = {
       if (account.provider === "google" || account.provider === "github") {
         try {
           const { email, given_name, family_name } = profile;
-          console.log(profile);
 
           const response = await axiosInstance.post("auth/oauth-login", {
             first_name: given_name,
             last_name: family_name,
             email: email,
           });
-          console.log(response.data.accessToken)
           userObject = response.data;
           return true;
         } catch (error) {

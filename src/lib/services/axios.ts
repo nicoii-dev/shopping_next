@@ -12,7 +12,6 @@ const axiosInstance = axios.create({
 // Add a request interceptor to include tokens (if needed)
 axiosInstance.interceptors.request.use(
   (config) => {
-    console.log(getCookie("accessToken"))
     if (getCookie("accessToken")) {
       config.headers.Authorization = `Bearer ${getCookie("accessToken")}`;
     }

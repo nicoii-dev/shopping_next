@@ -1,4 +1,4 @@
-import { ProtectedNavbar } from "@/components/protected/navbar";
+import { Navbar } from "@/components/navbar";
 
 export default function ProtectedGroupLayout({
   children,
@@ -7,7 +7,7 @@ export default function ProtectedGroupLayout({
 }) {
   return (
     <>
-      <ProtectedNavbar />
+      <Navbar />
       {children}
     </>
   );

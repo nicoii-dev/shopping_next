@@ -12,32 +12,29 @@ export interface ItemInterface {
 export interface ProductItemInterface {
   item: ItemInterface;
 }
-export function ProductsItem({
-  item,
-}: ProductItemInterface) {
+export function ProductsItem({ item }: ProductItemInterface) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const buyNow = () => {
-    dispatch(setProduct(item))
-    router.push(`/products/${item.price}`)
+    dispatch(setProduct(item));
+    router.push(`/products/${item.price}`);
   };
   return (
-    <div className="m-5 w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-      <a href="#">
-        <Image
-          className="p-8 rounded-t-lg w-full"
-          src="/assets/images/shoes1.png"
-          alt="product image"
-          width={200}
-          height={200}
-        />
-      </a>
+    <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:border-blue-800">
+      <Image
+        className="pb-2 w-64 rounded-t-lg object-contain"
+        src="/assets/images/shoes1.png"
+        alt="product image"
+        width={64}
+        height={50}
+        objectFit="contain"
+        unoptimized
+      />
       <div className="px-5 pb-5">
-        <a href="#">
-          <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-            {item.name}
-          </h5>
-        </a>
+        <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+          {item.name}
+        </h5>
+
         <div className="flex items-center mt-2.5 mb-5">
           <div className="flex items-center space-x-1 rtl:space-x-reverse">
             <svg

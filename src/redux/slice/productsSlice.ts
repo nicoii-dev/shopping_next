@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchAllProducts } from "@/lib/services/productsApi";
+import { PaginationInterface } from "@/lib/services/paginationInterface";
 
 const initialState = {
   products: [],
@@ -8,10 +9,13 @@ const initialState = {
   error: "",
 };
 
-export const getProducts = createAsyncThunk("getProducts", async () => {
-  const response = await fetchAllProducts();
-  return response;
-});
+export const getProducts = createAsyncThunk(
+  "getProducts",
+  async ({ page, per_page, search }: PaginationInterface) => {
+    const response = await fetchAllProducts({ page, per_page, search });
+    return response;
+  }
+);
 
 const productsSlice = createSlice({
   name: "products",

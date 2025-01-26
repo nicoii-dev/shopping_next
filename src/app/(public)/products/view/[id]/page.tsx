@@ -5,7 +5,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useAppSelector } from "@/redux/hooks";
 
-import CheckoutForm from "../../../../components/stripe/CheckoutForm";
+import CheckoutForm from '../../../../../components/stripe/CheckoutForm'
 import { payWithSession, payWithStripeIntent } from "@/lib/services/ordersApi";
 
 export default function ViewProduct() {
